@@ -1,0 +1,203 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    image: ghcr.io/level-up-organization/level-up-frontend:latest
+    ports:
+      - "5000:80"
+    labels:
+       - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - graylog
+
+  api.gateway.microservice:
+    image: ghcr.io/level-up-organization/api.gateway.microservice:latest
+    ports:
+      - "7001:8080"
+      - "7002:8081"
+    labels:
+       - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - api.auth.microservice
+    networks:
+      - graylog
+  
+  api.auth.microservice:
+    image: ghcr.io/level-up-organization/api.auth.microservice:latest
+    ports:
+      - "7003:8080"
+      - "7004:8081"
+    labels:
+       - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - api.auth.db.postgres
+      - graylog
+      - redis
+    networks:
+      - graylog
+
+  api.email-service.microservice:
+    image: ghcr.io/level-up-organization/email-service-microservice:latest
+    labels:
+       - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - api.auth.microservice
+      - kafka
+    networks:
+      - graylog
+    restart: on-failure
+
+  api.outbox-dispatcher.microservice:
+    image: ghcr.io/level-up-organization/outbox-dispatcher-microservice:latest
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - api.email-service.microservice
+      - api.auth.db.postgres
+    networks:
+      - graylog
+
+  api.auth.db.postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: levelup.auth.microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg-auth-data:/var/lib/postgresql/data
+    networks:
+      - graylog
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - graylog
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    depends_on:
+      - zookeeper
+    networks:
+      - graylog
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "9999:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      - kafka
+    networks:
+      - graylog
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - graylog
+
+  opensearch:
+    image: opensearchproject/opensearch:2.11.1
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    restart: unless-stopped
+    networks:
+      - graylog
+
+  graylog:
+    image: graylog/graylog:5.2
+    container_name: graylog
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=admin20041123123123123123123123123123123123123
+      - GRAYLOG_ROOT_PASSWORD_SHA2=5a50fcee09f9a486b93a63586662a55b10c8108fd74477af42fed8aef4081f5a
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://localhost:9000/
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
+      - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
+    entrypoint: /usr/bin/tini -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
+    depends_on:
+      - mongo
+      - opensearch
+    ports:
+      - "9000:9000"
+      - "12201:12201/udp"
+    volumes:
+      - graylog_journal:/usr/share/graylog/data/journal
+    restart: unless-stopped
+    networks:
+      - graylog
+    
+  redis:
+    image: redis:7
+    container_name: my-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - graylog
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./auth:/config
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=100
+      - WATCHTOWER_LABEL_ENABLE=true
+      - REGISTRY_AUTH_FILE=/config/config.json
+
+networks:
+  graylog:
+    driver: bridge
+
+volumes:
+  pg-auth-data:
+  mongo_data:
+  opensearch_data:
+  graylog_journal:
+  redis-data:
