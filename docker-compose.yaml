@@ -22,6 +22,19 @@ services:
       - api.auth.microservice
     networks:
       - graylog
+
+  api.course.microservice:
+    image: ghcr.io/level-up-organization/api.course.microservice:latest
+    ports:
+      - "7010:8082"
+      - "7011:8083"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - redis
+      - graylog
+    networks:
+      - graylog
   
   api.auth.microservice:
     image: ghcr.io/level-up-organization/api.auth.microservice:latest
@@ -70,6 +83,20 @@ services:
       - "5433:5432"
     volumes:
       - pg-auth-data:/var/lib/postgresql/data
+    networks:
+      - graylog
+  
+  api.course.db.postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: levelup.course.microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5431:5432"
+    volumes:
+      - pg-course-data:/var/lib/postgresql/data
     networks:
       - graylog
 
@@ -201,3 +228,4 @@ volumes:
   opensearch_data:
   graylog_journal:
   redis-data:
+  pg-course-data:
