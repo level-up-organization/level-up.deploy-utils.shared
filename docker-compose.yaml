@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
 
-  frontend:
+  frontend.level-up:
     image: ghcr.io/level-up-organization/level-up-frontend:latest
+    container_name: frontend.level-up 
     ports:
       - "5000:80"
     labels:
