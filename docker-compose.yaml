@@ -191,7 +191,7 @@ services:
     environment:
       - GRAYLOG_PASSWORD_SECRET=admin20041123123123123123123123123123123123123
       - GRAYLOG_ROOT_PASSWORD_SHA2=5a50fcee09f9a486b93a63586662a55b10c8108fd74477af42fed8aef4081f5a
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://localhost:9000/
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://81.94.150.219:9000/
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
       - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
     entrypoint: /usr/bin/tini -- wait-for-it mongo:27017 -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
