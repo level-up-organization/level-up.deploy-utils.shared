@@ -52,6 +52,16 @@ services:
       - redis
     networks:
       - graylog
+    
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: always
+    ports:
+      - "9980:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
 
   api.email-service.microservice:
     image: ghcr.io/level-up-organization/email-service-microservice:latest
@@ -232,3 +242,4 @@ volumes:
   graylog_journal:
   redis-data:
   pg-course-data:
+  portainer_data:
