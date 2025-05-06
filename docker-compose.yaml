@@ -42,6 +42,8 @@ services:
     ports:
       - "7003:8080"
       - "7004:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=prod
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
