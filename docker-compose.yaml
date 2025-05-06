@@ -194,16 +194,16 @@ services:
       - GRAYLOG_HTTP_EXTERNAL_URI=http://localhost:9000/
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
       - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
-    entrypoint: /usr/bin/tini -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
+    entrypoint: /usr/bin/tini -- wait-for-it mongo:27017 -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
     depends_on:
       - mongo
       - opensearch
     ports:
       - "9000:9000"
       - "12201:12201/udp"
+    restart: unless-stopped
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
-    restart: unless-stopped
     networks:
       - graylog
     
