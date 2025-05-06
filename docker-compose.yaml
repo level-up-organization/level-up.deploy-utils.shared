@@ -142,70 +142,70 @@ services:
     networks:
       - graylog
 
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    ports:
-      - "9999:8080"
-    environment:
-      DYNAMIC_CONFIG_ENABLED: 'true'
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
-    depends_on:
-      - kafka
-    networks:
-      - graylog
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   container_name: kafka-ui
+  #   ports:
+  #     - "9999:8080"
+  #   environment:
+  #     DYNAMIC_CONFIG_ENABLED: 'true'
+  #     KAFKA_CLUSTERS_0_NAME: local
+  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+  #   depends_on:
+  #     - kafka
+  #   networks:
+  #     - graylog
 
-  mongo:
-    image: mongo:5.0
-    container_name: mongo
-    restart: unless-stopped
-    volumes:
-      - mongo_data:/data/db
-    networks:
-      - graylog
+  # mongo:
+  #   image: mongo:5.0
+  #   container_name: mongo
+  #   restart: unless-stopped
+  #   volumes:
+  #     - mongo_data:/data/db
+  #   networks:
+  #     - graylog
 
-  opensearch:
-    image: opensearchproject/opensearch:2.11.1
-    container_name: opensearch
-    environment:
-      - discovery.type=single-node
-      - plugins.security.disabled=true
-      - bootstrap.memory_lock=true
-      - OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    ports:
-      - "9200:9200"
-    volumes:
-      - opensearch_data:/usr/share/opensearch/data
-    restart: unless-stopped
-    networks:
-      - graylog
+  # opensearch:
+  #   image: opensearchproject/opensearch:2.11.1
+  #   container_name: opensearch
+  #   environment:
+  #     - discovery.type=single-node
+  #     - plugins.security.disabled=true
+  #     - bootstrap.memory_lock=true
+  #     - OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   ports:
+  #     - "9200:9200"
+  #   volumes:
+  #     - opensearch_data:/usr/share/opensearch/data
+  #   restart: unless-stopped
+  #   networks:
+  #     - graylog
 
-  graylog:
-    image: graylog/graylog:5.2
-    container_name: graylog
-    environment:
-      - GRAYLOG_PASSWORD_SECRET=admin20041123123123123123123123123123123123123
-      - GRAYLOG_ROOT_PASSWORD_SHA2=5a50fcee09f9a486b93a63586662a55b10c8108fd74477af42fed8aef4081f5a
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://81.94.150.219:9000/
-      - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
-      - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
-    entrypoint: /usr/bin/tini -- wait-for-it mongo:27017 -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
-    depends_on:
-      - mongo
-      - opensearch
-    ports:
-      - "9000:9000"
-      - "12201:12201/udp"
-    restart: unless-stopped
-    volumes:
-      - graylog_journal:/usr/share/graylog/data/journal
-    networks:
-      - graylog
+  # graylog:
+  #   image: graylog/graylog:5.2
+  #   container_name: graylog
+  #   environment:
+  #     - GRAYLOG_PASSWORD_SECRET=admin20041123123123123123123123123123123123123
+  #     - GRAYLOG_ROOT_PASSWORD_SHA2=5a50fcee09f9a486b93a63586662a55b10c8108fd74477af42fed8aef4081f5a
+  #     - GRAYLOG_HTTP_EXTERNAL_URI=http://81.94.150.219:9000/
+  #     - GRAYLOG_ELASTICSEARCH_HOSTS=http://opensearch:9200
+  #     - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
+  #   entrypoint: /usr/bin/tini -- wait-for-it mongo:27017 -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
+  #   depends_on:
+  #     - mongo
+  #     - opensearch
+  #   ports:
+  #     - "9000:9000"
+  #     - "12201:12201/udp"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - graylog_journal:/usr/share/graylog/data/journal
+  #   networks:
+  #     - graylog
     
   redis:
     image: redis:7
@@ -237,9 +237,9 @@ networks:
 
 volumes:
   pg-auth-data:
-  mongo_data:
-  opensearch_data:
-  graylog_journal:
+  # mongo_data:
+  # opensearch_data:
+  # graylog_journal:
   redis-data:
   pg-course-data:
   portainer_data:
