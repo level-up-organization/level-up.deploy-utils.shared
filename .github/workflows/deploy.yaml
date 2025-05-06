@@ -21,6 +21,7 @@ jobs:
         username: ${{ secrets.VDS_USER }}
         key: ${{ secrets.VDS_SSH_KEY }}
         port: 22
+        debug: true
         script: |
           cd level-up.deploy-utils.shared/
           git pull origin main
