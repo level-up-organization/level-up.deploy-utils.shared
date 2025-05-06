@@ -33,7 +33,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - redis
-      - graylog
+     ## - graylog
     networks:
       - graylog
   
@@ -48,7 +48,7 @@ services:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - api.auth.db.postgres
-      - graylog
+     ##- graylog
       - redis
     networks:
       - graylog
