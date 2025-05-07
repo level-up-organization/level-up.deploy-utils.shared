@@ -16,7 +16,7 @@ services:
     image: ghcr.io/level-up-organization/api.gateway.microservice:latest
     container_name: api.gateway
     ports:
-      - "7001:8080"
+      - "7001:9090"
       - "7002:8081"
     environment:
       - AUTH_API_URL=http://api.auth.microservice:8080/
