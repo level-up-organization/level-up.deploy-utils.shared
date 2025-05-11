@@ -79,7 +79,7 @@ services:
       - api.auth.microservice
       - kafka
     networks:
-      - graylog
+      - level-up-network
     restart: on-failure
 
   api.outbox-dispatcher.microservice:
