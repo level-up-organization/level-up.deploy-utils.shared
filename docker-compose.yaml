@@ -148,6 +148,8 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     depends_on:
       - zookeeper
+    volumes:
+      - kafka-data:/var/lib/kafka/data
     networks:
       - level-up-network
 
@@ -280,6 +282,7 @@ volumes:
   # graylog_journal:
   redis-data:
   pg-course-data:
+  kafka-data:
   portainer_data:
   certbot-etc:
   certbot-var:
