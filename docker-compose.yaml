@@ -10,7 +10,7 @@ services:
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
     networks:
-      - graylog
+      - level-up-network
 
   api.gateway.microservice:
     image: ghcr.io/level-up-organization/api.gateway.microservice:latest
@@ -25,8 +25,9 @@ services:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - api.auth.microservice
+      - api.course.microservice
     networks:
-      - graylog
+      - level-up-network
 
   api.course.microservice:
     image: ghcr.io/level-up-organization/api.course.microservice:latest
@@ -40,7 +41,7 @@ services:
       - redis
      ## - graylog
     networks:
-      - graylog
+      - level-up-network
   
   api.auth.microservice:
     image: ghcr.io/level-up-organization/api.auth.microservice:latest
@@ -57,7 +58,7 @@ services:
      ##- graylog
       - redis
     networks:
-      - graylog
+      - level-up-network
     
   portainer:
     image: portainer/portainer-ce
@@ -91,7 +92,7 @@ services:
       - api.email-service.microservice
       - api.auth.db.postgres
     networks:
-      - graylog
+      - level-up-network
 
   api.auth.db.postgres:
     image: postgres:14
@@ -105,7 +106,7 @@ services:
     volumes:
       - pg-auth-data:/var/lib/postgresql/data
     networks:
-      - graylog
+      - level-up-network
   
   api.course.db.postgres:
     image: postgres:14
@@ -119,7 +120,7 @@ services:
     volumes:
       - pg-course-data:/var/lib/postgresql/data
     networks:
-      - graylog
+      - level-up-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
@@ -130,7 +131,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-      - graylog
+      - level-up-network
 
   kafka:
     image: confluentinc/cp-kafka:7.6.0
@@ -148,7 +149,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - graylog
+      - level-up-network
 
   # kafka-ui:
   #   image: provectuslabs/kafka-ui:latest
@@ -224,7 +225,7 @@ services:
       - redis-data:/data
     restart: unless-stopped
     networks:
-      - graylog
+      - level-up-network
 
   watchtower:
     image: containrrr/watchtower
@@ -239,8 +240,35 @@ services:
       - WATCHTOWER_LABEL_ENABLE=true
       - REGISTRY_AUTH_FILE=/config/config.json
 
+  nginx:
+    image: nginx:latest
+    restart: on-failure
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - api.gateway.microservice
+      - frontend.level-up
+    networks:
+      - level-up-network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 6h & wait $${!}; certbot renew; done'"
+    networks:
+      - level-up-network
+
+
 networks:
-  graylog:
+  level-up-network:
     driver: bridge
 
 volumes:
@@ -251,3 +279,5 @@ volumes:
   redis-data:
   pg-course-data:
   portainer_data:
+  certbot-etc:
+  certbot-var:
