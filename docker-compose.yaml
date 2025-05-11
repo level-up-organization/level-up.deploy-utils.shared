@@ -249,8 +249,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
+      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./nginx/letsencrypt:/var/lib/letsencrypt
     depends_on:
       - api.gateway.microservice
       - frontend.level-up
