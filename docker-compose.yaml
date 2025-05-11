@@ -241,6 +241,7 @@ services:
       - REGISTRY_AUTH_FILE=/config/config.json
 
   nginx:
+    container_name: nginx
     image: nginx:latest
     restart: on-failure
     ports:
@@ -258,6 +259,7 @@ services:
       - level-up-network
 
   certbot:
+    container_name: certbot
     image: certbot/certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
