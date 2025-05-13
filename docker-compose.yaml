@@ -156,19 +156,19 @@ services:
     networks:
       - level-up-network
 
-  # kafka-ui:
-  #   image: provectuslabs/kafka-ui:latest
-  #   container_name: kafka-ui
-  #   ports:
-  #     - "9999:8080"
-  #   environment:
-  #     DYNAMIC_CONFIG_ENABLED: 'true'
-  #     KAFKA_CLUSTERS_0_NAME: local
-  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
-  #   depends_on:
-  #     - kafka
-  #   networks:
-  #     - graylog
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "9999:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      - kafka
+    networks:
+      - level-up-network
 
   # mongo:
   #   image: mongo:5.0
