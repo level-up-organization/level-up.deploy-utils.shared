@@ -127,6 +127,8 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -289,3 +291,4 @@ volumes:
   portainer_data:
   certbot-etc:
   certbot-var:
+  zookeeper-data:
