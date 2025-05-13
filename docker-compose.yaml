@@ -80,7 +80,7 @@ services:
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
-      - api.auth.db.postgres
+      # - api.auth.db.postgres
      ##- graylog
       - redis
     networks:
@@ -116,7 +116,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - api.email-service.microservice
-      - api.auth.db.postgres
+      # - api.auth.db.postgres
     networks:
       - level-up-network
 
