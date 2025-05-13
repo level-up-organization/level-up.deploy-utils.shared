@@ -12,6 +12,31 @@ services:
     networks:
       - level-up-network
 
+  api.users.microservice:
+    image: ghcr.io/level-up-organization/api.users.microservice:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    container_name: api.users
+    ports:
+      - "6999:6999"
+      - "6998:6988"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - level-up-network
+
+  users.consumer.worker:
+    image: ghcr.io/level-up-organization/users.worker.consumers.microservice:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    container_name: users.workers
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - kafka
+    networks:
+      - level-up-network
+
   api.gateway.microservice:
     image: ghcr.io/level-up-organization/api.gateway.microservice:latest
     container_name: api.gateway
@@ -21,6 +46,7 @@ services:
     environment:
       - AUTH_API_URL=http://api.auth.microservice:8080/
       - COURSE_API_URL=http://api.course.microservice:8082/
+      - USERS_API_URL=http://api.users.microservice:6999/
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
@@ -94,33 +120,33 @@ services:
     networks:
       - level-up-network
 
-  api.auth.db.postgres:
-    image: postgres:14
-    restart: always
-    environment:
-      POSTGRES_DB: levelup.auth.microservice
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-    ports:
-      - "5433:5432"
-    volumes:
-      - pg-auth-data:/var/lib/postgresql/data
-    networks:
-      - level-up-network
+  # api.auth.db.postgres:
+  #   image: postgres:14
+  #   restart: always
+  #   environment:
+  #     POSTGRES_DB: levelup.auth.microservice
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: root
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - pg-auth-data:/var/lib/postgresql/data
+  #   networks:
+  #     - level-up-network
   
-  api.course.db.postgres:
-    image: postgres:14
-    restart: always
-    environment:
-      POSTGRES_DB: levelup.course.microservice
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-    ports:
-      - "5431:5432"
-    volumes:
-      - pg-course-data:/var/lib/postgresql/data
-    networks:
-      - level-up-network
+  # api.course.db.postgres:
+  #   image: postgres:14
+  #   restart: always
+  #   environment:
+  #     POSTGRES_DB: levelup.course.microservice
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: root
+  #   ports:
+  #     - "5431:5432"
+  #   volumes:
+  #     - pg-course-data:/var/lib/postgresql/data
+  #   networks:
+  #     - level-up-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
@@ -281,12 +307,12 @@ networks:
     driver: bridge
 
 volumes:
-  pg-auth-data:
+  # pg-auth-data:
   # mongo_data:
   # opensearch_data:
   # graylog_journal:
   redis-data:
-  pg-course-data:
+  # pg-course-data:
   kafka-data:
   portainer_data:
   certbot-etc:
