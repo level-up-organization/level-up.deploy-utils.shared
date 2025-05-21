@@ -65,7 +65,7 @@ services:
       - "7001:9090"
       - "7002:8081"
     environment:
-      - AUTH_API_URL=http://api.auth.microservice:7003/
+      - AUTH_API_URL=http://api.auth.microservice:9090/
       - COURSE_API_URL=http://api.course.microservice:8082/
       - USERS_API_URL=http://api.users.microservice:6999/
     labels:
