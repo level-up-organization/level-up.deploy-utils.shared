@@ -65,7 +65,7 @@ services:
       - "7001:9090"
       - "7002:8081"
     environment:
-      - AUTH_API_URL=http://api.auth.microservice:9090/
+      - AUTH_API_URL=http://api.auth.microservice:7003/
       - COURSE_API_URL=http://api.course.microservice:8082/
       - USERS_API_URL=http://api.users.microservice:6999/
     labels:
@@ -94,7 +94,7 @@ services:
     image: ghcr.io/level-up-organization/api.auth.microservice:latest
     container_name: api.auth
     ports:
-      - "7003:8080"
+      - "7003:9090"
       - "7004:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=prod
