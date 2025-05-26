@@ -97,6 +97,7 @@ services:
       - "7003:9091"
       - "7004:8081"
     environment:
+      - ApplicationPort=9091
       - ASPNETCORE_ENVIRONMENT=prod
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
