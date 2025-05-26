@@ -118,29 +118,29 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
 
-  # api.email-service.microservice:
-  #   image: ghcr.io/level-up-organization/email-service-microservice:latest
-  #   container_name: api.email-service
-  #   labels:
-  #      - "com.centurylinklabs.watchtower.enable=true"
-  #   depends_on:
-  #     - api.auth.microservice
-  #     - kafka
-  #   networks:
-  #     - level-up-network
-  #   restart: on-failure
+  api.email-service.microservice:
+    image: ghcr.io/level-up-organization/email-service-microservice:latest
+    container_name: api.email-service
+    labels:
+       - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - api.auth.microservice
+      - kafka
+    networks:
+      - level-up-network
+    restart: on-failure
 
-  # api.outbox-dispatcher.microservice:
-  #   image: ghcr.io/level-up-organization/outbox-dispatcher-microservice:latest
-  #   container_name: api.outbox-dispatcher
-  #   restart: always
-  #   labels:
-  #     - "com.centurylinklabs.watchtower.enable=true"
-  #   depends_on:
-  #     - api.email-service.microservice
-  #     # - api.auth.db.postgres
-  #   networks:
-  #     - level-up-network
+  api.outbox-dispatcher.microservice:
+    image: ghcr.io/level-up-organization/outbox-dispatcher-microservice:latest
+    container_name: api.outbox-dispatcher
+    restart: always
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - api.email-service.microservice
+      # - api.auth.db.postgres
+    networks:
+      - level-up-network
 
   # api.auth.db.postgres:
   #   image: postgres:14
