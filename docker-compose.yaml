@@ -335,8 +335,8 @@ volumes:
   # graylog_journal:
   redis-data:
   # pg-course-data:
-  #kafka-data:
+  kafka-data:
   portainer_data:
   certbot-etc:
   certbot-var:
-  #zookeeper-data:
+  zookeeper-data:
