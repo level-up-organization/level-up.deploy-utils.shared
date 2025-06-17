@@ -323,12 +323,32 @@ services:
     networks:
       - level-up-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - level-up-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - level-up-network
 
 networks:
   level-up-network:
     driver: bridge
 
 volumes:
+  grafana-storage:
   pg-auth-data:
   # mongo_data:
   # opensearch_data:
