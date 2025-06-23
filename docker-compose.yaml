@@ -33,30 +33,30 @@ services:
     networks:
       - level-up-network
 
-  # api.users.microservice:
-  #   image: ghcr.io/level-up-organization/api.users.microservice:latest
-  #   labels:
-  #     - "com.centurylinklabs.watchtower.enable=true"
-  #   container_name: api.users
-  #   ports:
-  #     - "6999:6999"
-  #     - "6998:6988"
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Production
-  #   networks:
-  #     - level-up-network
+  api.users.microservice:
+    image: ghcr.io/level-up-organization/api.users.microservice:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    container_name: api.users
+    ports:
+      - "6999:6999"
+      - "6998:6988"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - level-up-network
 
-  # users.consumer.worker:
-  #   image: ghcr.io/level-up-organization/users.worker.consumers.microservice:latest
-  #   labels:
-  #     - "com.centurylinklabs.watchtower.enable=true"
-  #   container_name: users.workers
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Production
-  #   depends_on:
-  #     - kafka
-  #   networks:
-  #     - level-up-network
+  users.consumer.worker:
+    image: ghcr.io/level-up-organization/users.worker.consumers.microservice:latest
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    container_name: users.workers
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - kafka
+    networks:
+      - level-up-network
 
   api.gateway.microservice:
     image: ghcr.io/level-up-organization/api.gateway.microservice:latest
