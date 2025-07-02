@@ -61,6 +61,8 @@ services:
   api.gateway.microservice:
     image: ghcr.io/level-up-organization/api.gateway.microservice:latest
     container_name: api.gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "7001:9090"
       - "7002:8081"
