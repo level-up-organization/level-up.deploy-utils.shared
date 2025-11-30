@@ -311,6 +311,8 @@ services:
       - ./nginx/auth:/etc/nginx/auth
       - ./nginx/letsencrypt:/etc/letsencrypt
       - ./nginx/letsencrypt:/var/lib/letsencrypt
+      - ./nginx/init-pass.sh:/docker-entrypoint.d/init-pass.sh
+    command: ["sh", "/docker-entrypoint.d/init-pass.sh"] 
     depends_on:
       - api.gateway.microservice
       - frontend.level-up
