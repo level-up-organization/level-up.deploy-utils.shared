@@ -25,5 +25,6 @@ jobs:
         script: |
           cd level-up.deploy-utils.shared/
           git pull origin main
+          sudo su
           docker-compose -f docker-compose.dev.yaml pull
           docker-compose -f docker-compose.dev.yaml up -d
