@@ -97,7 +97,6 @@ services:
       - "7006:9091"
       - "7007:8081"
     environment:
-      - ApplicationPort=9091
       - ASPNETCORE_ENVIRONMENT=Development
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
@@ -146,19 +145,19 @@ services:
     networks:
       - level-up-network
 
-  # api.auth.db.postgres:
-  #   image: postgres:14
-  #   restart: always
-  #   environment:
-  #     POSTGRES_DB: levelup.auth.microservice
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: root
-  #   ports:
-  #     - "5433:5432"
-  #   volumes:
-  #     - pg-auth-data:/var/lib/postgresql/data
-  #   networks:
-  #     - level-up-network
+  api.auth.db.postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: levelup.auth.microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg-auth-data:/var/lib/postgresql/data
+    networks:
+      - level-up-network
   
   # api.course.db.postgres:
   #   image: postgres:14
