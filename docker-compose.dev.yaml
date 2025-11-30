@@ -33,30 +33,30 @@ services:
     networks:
       - level-up-network
 
-  api.users.microservice:
-    image: ghcr.io/level-up-organization/api.users.microservice:development-latest
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    container_name: api.users
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "7000:6999"
-      - "7001:6988"
-    networks:
-      - level-up-network
+  # api.users.microservice:
+  #   image: ghcr.io/level-up-organization/api.users.microservice:development-latest
+  #   labels:
+  #     - "com.centurylinklabs.watchtower.enable=true"
+  #   container_name: api.users
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #   ports:
+  #     - "7000:6999"
+  #     - "7001:6988"
+  #   networks:
+  #     - level-up-network
 
-  users.consumer.worker:
-    image: ghcr.io/level-up-organization/users.worker.consumers.microservice:development-latest
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    container_name: users.workers
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    depends_on:
-      - kafka
-    networks:
-      - level-up-network
+  # users.consumer.worker:
+  #   image: ghcr.io/level-up-organization/users.worker.consumers.microservice:development-latest
+  #   labels:
+  #     - "com.centurylinklabs.watchtower.enable=true"
+  #   container_name: users.workers
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #   depends_on:
+  #     - kafka
+  #   networks:
+  #     - level-up-network
 
   api.gateway.microservice:
     image: ghcr.io/level-up-organization/api.gateway.microservice:development-latest
@@ -74,21 +74,21 @@ services:
     networks:
       - level-up-network
 
-  api.course.microservice:
-    image: ghcr.io/level-up-organization/api.course.microservice:development-latest
-    container_name: api.course
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "7004:8082"
-      - "7005:8083"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    depends_on:
-      - redis
-     ## - graylog
-    networks:
-      - level-up-network
+  # api.course.microservice:
+  #   image: ghcr.io/level-up-organization/api.course.microservice:development-latest
+  #   container_name: api.course
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #   ports:
+  #     - "7004:8082"
+  #     - "7005:8083"
+  #   labels:
+  #     - "com.centurylinklabs.watchtower.enable=true"
+  #   depends_on:
+  #     - redis
+  #    ## - graylog
+  #   networks:
+  #     - level-up-network
   
   api.auth.microservice:
     image: ghcr.io/level-up-organization/api.auth.microservice:development-latest
@@ -131,19 +131,19 @@ services:
       - level-up-network
     restart: on-failure
 
-  api.outbox-dispatcher.microservice:
-    image: ghcr.io/level-up-organization/outbox-dispatcher-microservice:development-latest
-    container_name: api.outbox-dispatcher
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    restart: always
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    depends_on:
-      - api.email-service.microservice
-      # - api.auth.db.postgres
-    networks:
-      - level-up-network
+  # api.outbox-dispatcher.microservice:
+  #   image: ghcr.io/level-up-organization/outbox-dispatcher-microservice:development-latest
+  #   container_name: api.outbox-dispatcher
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #   restart: always
+  #   labels:
+  #     - "com.centurylinklabs.watchtower.enable=true"
+  #   depends_on:
+  #     - api.email-service.microservice
+  #     # - api.auth.db.postgres
+  #   networks:
+  #     - level-up-network
 
   api.auth.db.postgres:
     image: postgres:14
@@ -312,7 +312,11 @@ services:
       - ./nginx/letsencrypt:/etc/letsencrypt
       - ./nginx/letsencrypt:/var/lib/letsencrypt
       - ./nginx/init-pass.sh:/docker-entrypoint.d/init-pass.sh
-    command: ["sh", "/docker-entrypoint.d/init-pass.sh"] 
+    command: >
+      sh -c "
+        chmod +x /docker-entrypoint.d/init-pass.sh &&
+        /docker-entrypoint.d/init-pass.sh
+      "
     depends_on:
       - api.gateway.microservice
       - frontend.level-up
