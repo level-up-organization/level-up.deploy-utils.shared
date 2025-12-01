@@ -23,15 +23,15 @@ services:
   #   networks:
   #     - level-up-network
 
-  frontend.level-up:
-    image: ghcr.io/level-up-organization/level-up-frontend:development-latest
-    container_name: frontend.level-up 
-    ports:
-      - "5001:80"
-    labels:
-       - "com.centurylinklabs.watchtower.enable=true"
-    networks:
-      - level-up-network
+  # frontend.level-up:
+  #   image: ghcr.io/level-up-organization/level-up-frontend:development-latest
+  #   container_name: frontend.level-up 
+  #   ports:
+  #     - "5001:80"
+  #   labels:
+  #      - "com.centurylinklabs.watchtower.enable=true"
+  #   networks:
+  #     - level-up-network
 
   # api.users.microservice:
   #   image: ghcr.io/level-up-organization/api.users.microservice:development-latest
@@ -70,7 +70,7 @@ services:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - api.auth.microservice
-      - api.course.microservice
+    #  - api.course.microservice
     networks:
       - level-up-network
 
@@ -319,7 +319,7 @@ services:
       "
     depends_on:
       - api.gateway.microservice
-      - frontend.level-up
+    #  - frontend.level-up
     networks:
       - level-up-network
 
