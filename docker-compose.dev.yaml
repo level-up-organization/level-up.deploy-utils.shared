@@ -319,7 +319,7 @@ services:
       "
     depends_on:
       - api.gateway.microservice
-    #  - frontend.level-up
+      - frontend.level-up
     networks:
       - level-up-network
 
