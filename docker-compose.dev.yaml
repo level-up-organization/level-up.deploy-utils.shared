@@ -122,7 +122,7 @@ services:
     image: ghcr.io/level-up-organization/email-service-microservice:development-latest
     container_name: api.email-service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_ENVIRONMENT=Development
     labels:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
@@ -136,11 +136,7 @@ services:
     image: ghcr.io/level-up-organization/outbox-dispatcher-microservice:development-latest
     container_name: api.outbox-dispatcher
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - Kafka__BootstrapServers=kafka:9092 
-      - Kafka__Topic=topic
-      - Kafka__GroupId=dispatcher-group
-      - ConnectionStrings__DefaultConnection=Server=api.auth.db.postgres;Port=5432;Database=levelup.auth.microservice;User Id=postgres;Password=root;
+      - DOTNET_ENVIRONMENT=Development
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
