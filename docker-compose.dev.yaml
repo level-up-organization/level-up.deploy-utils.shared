@@ -39,7 +39,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     container_name: api.users
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_ENVIRONMENT=Development
     ports:
       - "7000:6999"
       - "7001:6988"
@@ -52,7 +52,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     container_name: users.workers
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_ENVIRONMENT=Development
     depends_on:
       - kafka
       - api.users.db.postgres
