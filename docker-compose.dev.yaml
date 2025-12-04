@@ -137,6 +137,9 @@ services:
     container_name: api.outbox-dispatcher
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - Kafka__BootstrapServers=kafka:9092 
+      - Kafka__Topic=topic
+      - Kafka__GroupId=dispatcher-group
     restart: always
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
