@@ -140,6 +140,7 @@ services:
       - Kafka__BootstrapServers=kafka:9092 
       - Kafka__Topic=topic
       - Kafka__GroupId=dispatcher-group
+      - ConnectionStrings__DefaultConnection="Server=api.auth.db.postgres;Port=5432;Database=levelup.auth.microservice;User Id=postgres;Password=root;"
     restart: always
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
