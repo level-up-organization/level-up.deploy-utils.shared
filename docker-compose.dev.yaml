@@ -219,11 +219,12 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
     volumes:
       - kafka-data:/tmp/kraft-combined-logs
+
     networks:
       - level-up-network
-  
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
