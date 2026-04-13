@@ -228,8 +228,7 @@ services:
     image: apache/kafka:4.0.1
     container_name: kafka-init-topics
     depends_on:
-      kafka:
-        condition: service_healthy
+      - kafka
     networks:
       - level-up-network
     entrypoint: ["/bin/sh", "-c"]
