@@ -234,13 +234,13 @@ services:
     entrypoint: ["/bin/sh", "-c"]
     command:
       - >-
-        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092
+        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092
         --create --if-not-exists --topic email-notification-topic
         --partitions 1 --replication-factor 1
-        && /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092
+        && /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092
         --create --if-not-exists --topic user-registered-topic
         --partitions 1 --replication-factor 1
-        && /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092
+        && /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092
         --create --if-not-exists --topic user-email-confirmed-topic
         --partitions 1 --replication-factor 1
     restart: "no"
