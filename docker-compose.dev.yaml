@@ -107,6 +107,20 @@ services:
       - redis
     networks:
       - level-up-network
+
+  api.questions.microservice:
+    image: ghcr.io/level-up-organization/api.questions.microservice:production-latest
+    container_name: api.questions
+    ports:
+      - "7009:8080"
+    depends_on:
+      - api.questions.db.postgres
+    labels:
+       - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - level-up-network
     
   portainer:
     image: portainer/portainer-ce
@@ -179,6 +193,20 @@ services:
     networks:
       - level-up-network
 
+  api.questions.db.postgres:
+    container_name: api.questions.db.postgres
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: levelup.questions.microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5435:5432"
+    volumes:
+      - pg-questions-data:/var/lib/postgresql/data
+    networks:
+      - level-up-network
   
   # api.course.db.postgres:
   #   image: postgres:14
@@ -393,6 +421,7 @@ networks:
     driver: bridge
 
 volumes:
+  pg-questions-data:
   grafana-storage:
   pg-auth-data:
   nginx-auth:
