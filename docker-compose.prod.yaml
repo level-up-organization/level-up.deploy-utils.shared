@@ -309,6 +309,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl:ro
       - ./nginx/letsencrypt:/etc/letsencrypt
       - ./nginx/letsencrypt:/var/lib/letsencrypt
       - certbot-www:/var/www/certbot
