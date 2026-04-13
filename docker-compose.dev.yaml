@@ -150,6 +150,7 @@ services:
 
   # ------ databases -------
   api.auth.db.postgres:
+    container_name: api.auth.db.postgres
     image: postgres:14
     restart: always
     environment:
@@ -164,6 +165,7 @@ services:
       - level-up-network
 
   api.users.db.postgres:
+    container_name: api.users.db.postgres
     image: postgres:14
     restart: always
     environment:
@@ -221,6 +223,22 @@ services:
       - kafka_data_dev:/var/lib/kafka/data
     networks:
       - level-up-network
+
+  kafka-init-topics:
+    image: apache/kafka:4.0.1
+    container_name: kafka-init-topics
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - level-up-network
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092
+        --create --if-not-exists --topic email-notification-topic
+        --partitions 1 --replication-factor 1
+    restart: "no"
 
 
   kafka-ui:
