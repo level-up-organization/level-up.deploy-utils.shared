@@ -33,32 +33,6 @@ services:
     networks:
       - level-up-network
 
-  api.users.microservice:
-    image: ghcr.io/level-up-organization/api.users.microservice:production-latest
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    container_name: api.users
-    environment:
-      - DOTNET_ENVIRONMENT=Production
-    ports:
-      - "7000:6999"
-      - "7001:6988"
-    networks:
-      - level-up-network
-
-  users.consumer.worker:
-    image: ghcr.io/level-up-organization/users.worker.consumers.microservice:production-latest
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    container_name: users.workers
-    environment:
-      - DOTNET_ENVIRONMENT=Production
-    depends_on:
-      - kafka
-      - api.users.db.postgres
-    networks:
-      - level-up-network
-
   api.gateway.microservice:
     image: ghcr.io/level-up-organization/api.gateway.microservice:production-latest
     container_name: api.gateway
@@ -175,21 +149,6 @@ services:
       - "5433:5432"
     volumes:
       - pg-auth-data:/var/lib/postgresql/data
-    networks:
-      - level-up-network
-
-  api.users.db.postgres:
-    container_name: api.users.db.postgres
-    image: postgres:14
-    restart: always
-    environment:
-      POSTGRES_DB: levelup.users.microservice
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-    ports:
-      - "5434:5432"
-    volumes:
-      - pg-users-data:/var/lib/postgresql/data
     networks:
       - level-up-network
 
@@ -425,7 +384,6 @@ volumes:
   grafana-storage:
   pg-auth-data:
   nginx-auth:
-  pg-users-data:
   # mongo_data:
   # opensearch_data:
   # graylog_journal:
