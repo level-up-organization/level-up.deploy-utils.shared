@@ -130,7 +130,6 @@ services:
     depends_on:
       - api.email-service.microservice
       - api.auth.db.postgres
-      - users.consumer.worker
       - kafka
     networks:
       - level-up-network
