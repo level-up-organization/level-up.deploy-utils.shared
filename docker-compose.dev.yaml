@@ -178,7 +178,7 @@ services:
     environment:
       POSTGRES_DB: levelup.questions.microservice
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: asdasdasdasdasdasdasdsad
     ports:
       - "5435:5432"
     volumes:
