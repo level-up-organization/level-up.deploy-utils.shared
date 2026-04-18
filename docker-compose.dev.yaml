@@ -96,26 +96,26 @@ services:
     networks:
       - level-up-network
 
-  api.payments.microservice:
-    image: ghcr.io/level-up-organization/api.payments.microservice:production-latest
-    container_name: api.payments
-    ports:
-      - "7010:8080"
-    depends_on:
-      - api.payments.db.postgres
-      - api.auth.microservice
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__PaymentsDb: Host=api.payments.db.postgres;Port=5432;Database=levelup.payments.microservice;Username=postgres;Password=root
-      AuthGrpc__Address: http://api.auth.microservice:9092
-      Pal24__BaseUrl: https://pal24.pro
-      Pal24__Token: ${PAL24_TOKEN}
-      Pal24__ShopId: ${PAL24_SHOP_ID}
-      Pal24__CurrencyIn: RUB
-    networks:
-      - level-up-network
+  # api.payments.microservice:
+  #   image: ghcr.io/level-up-organization/api.payments.microservice:production-latest
+  #   container_name: api.payments
+  #   ports:
+  #     - "7010:8080"
+  #   depends_on:
+  #     - api.payments.db.postgres
+  #     - api.auth.microservice
+  #   labels:
+  #     - "com.centurylinklabs.watchtower.enable=true"
+  #   environment:
+  #     ASPNETCORE_ENVIRONMENT: Production
+  #     ConnectionStrings__PaymentsDb: Host=api.payments.db.postgres;Port=5432;Database=levelup.payments.microservice;Username=postgres;Password=root
+  #     AuthGrpc__Address: http://api.auth.microservice:9092
+  #     Pal24__BaseUrl: https://pal24.pro
+  #     Pal24__Token: ${PAL24_TOKEN}
+  #     Pal24__ShopId: ${PAL24_SHOP_ID}
+  #     Pal24__CurrencyIn: RUB
+  #   networks:
+  #     - level-up-network
     
   portainer:
     image: portainer/portainer-ce
@@ -186,20 +186,20 @@ services:
     networks:
       - level-up-network
 
-  api.payments.db.postgres:
-    container_name: api.payments.db.postgres
-    image: postgres:14
-    restart: always
-    environment:
-      POSTGRES_DB: levelup.payments.microservice
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-    ports:
-      - "5436:5432"
-    volumes:
-      - pg-payments-data:/var/lib/postgresql/data
-    networks:
-      - level-up-network
+  # api.payments.db.postgres:
+  #   container_name: api.payments.db.postgres
+  #   image: postgres:14
+  #   restart: always
+  #   environment:
+  #     POSTGRES_DB: levelup.payments.microservice
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: root
+  #   ports:
+  #     - "5436:5432"
+  #   volumes:
+  #     - pg-payments-data:/var/lib/postgresql/data
+  #   networks:
+  #     - level-up-network
   
   # api.course.db.postgres:
   #   image: postgres:14
@@ -415,7 +415,7 @@ networks:
 
 volumes:
   pg-questions-data:
-  pg-payments-data:
+  #pg-payments-data:
   grafana-storage:
   pg-auth-data:
   nginx-auth:
