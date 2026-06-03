@@ -423,7 +423,7 @@ volumes:
   # opensearch_data:
   # graylog_journal:
   redis-data:
-  # pg-course-data:
+  pg-course-data:
   kafka_data_dev:
   portainer_data:
   certbot-etc:
