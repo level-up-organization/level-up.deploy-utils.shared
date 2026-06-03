@@ -203,6 +203,7 @@ services:
   
   api.course.db.postgres:
     image: postgres:14
+    container_name: api.course.db.postgres
     restart: always
     environment:
       POSTGRES_DB: levelup.course.microservice
