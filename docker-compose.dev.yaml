@@ -53,7 +53,7 @@ services:
     image: ghcr.io/level-up-organization/api.course.microservice:production-latest
     container_name: api.course
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "7004:8082"
       - "7005:8083"
