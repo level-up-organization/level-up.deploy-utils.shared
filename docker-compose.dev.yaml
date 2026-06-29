@@ -186,20 +186,20 @@ services:
     networks:
       - level-up-network
 
-  # api.payments.db.postgres:
-  #   container_name: api.payments.db.postgres
-  #   image: postgres:14
-  #   restart: always
-  #   environment:
-  #     POSTGRES_DB: levelup.payments.microservice
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: root
-  #   ports:
-  #     - "5436:5432"
-  #   volumes:
-  #     - pg-payments-data:/var/lib/postgresql/data
-  #   networks:
-  #     - level-up-network
+  api.payments.db.postgres:
+    container_name: api.payments.db.postgres
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: levelup.payments.microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5436:5432"
+    volumes:
+      - pg-payments-data:/var/lib/postgresql/data
+    networks:
+      - level-up-network
   
   # api.course.db.postgres:
   #   image: postgres:14
@@ -415,7 +415,7 @@ networks:
 
 volumes:
   pg-questions-data:
-  #pg-payments-data:
+  pg-payments-data:
   grafana-storage:
   pg-auth-data:
   nginx-auth:
