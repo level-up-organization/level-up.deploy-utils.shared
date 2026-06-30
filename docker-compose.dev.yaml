@@ -210,6 +210,7 @@ services:
       POSTGRES_DB: levelup.course.microservice
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5439:5432"
     volumes:
