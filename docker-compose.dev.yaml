@@ -54,6 +54,7 @@ services:
     container_name: api.course
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - CourseDbContextOptions__ConnectionString=Host=api.course.db.postgres;Port=5432;Database=levelup.course.microservice;Username=postgres;Password=root
     ports:
       - "7004:8082"
       - "7005:8083"
@@ -203,6 +204,7 @@ services:
   
   api.course.db.postgres:
     image: postgres:14
+    container_name: api.course.db.postgres
     restart: always
     environment:
       POSTGRES_DB: levelup.course.microservice
