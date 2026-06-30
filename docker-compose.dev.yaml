@@ -45,25 +45,25 @@ services:
        - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - api.auth.microservice
-    #  - api.course.microservice
+      - api.course.microservice
     networks:
       - level-up-network
 
-  # api.course.microservice:
-  #   image: ghcr.io/level-up-organization/api.course.microservice:production-latest
-  #   container_name: api.course
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Production
-  #   ports:
-  #     - "7004:8082"
-  #     - "7005:8083"
-  #   labels:
-  #     - "com.centurylinklabs.watchtower.enable=true"
-  #   depends_on:
-  #     - redis
-  #    ## - graylog
-  #   networks:
-  #     - level-up-network
+  api.course.microservice:
+    image: ghcr.io/level-up-organization/api.course.microservice:production-latest
+    container_name: api.course
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "7004:8082"
+      - "7005:8083"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - redis
+     ## - graylog
+    networks:
+      - level-up-network
   
   api.auth.microservice:
     image: ghcr.io/level-up-organization/api.auth.microservice:production-latest
@@ -201,19 +201,19 @@ services:
     networks:
       - level-up-network
   
-  # api.course.db.postgres:
-  #   image: postgres:14
-  #   restart: always
-  #   environment:
-  #     POSTGRES_DB: levelup.course.microservice
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: root
-  #   ports:
-  #     - "5431:5432"
-  #   volumes:
-  #     - pg-course-data:/var/lib/postgresql/data
-  #   networks:
-  #     - level-up-network
+  api.course.db.postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: levelup.course.microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5431:5432"
+    volumes:
+      - pg-course-data:/var/lib/postgresql/data
+    networks:
+      - level-up-network
 
   kafka:
     image: apache/kafka:4.0.1
@@ -423,7 +423,7 @@ volumes:
   # opensearch_data:
   # graylog_journal:
   redis-data:
-  # pg-course-data:
+  pg-course-data:
   kafka_data_dev:
   portainer_data:
   certbot-etc:
